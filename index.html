@@ -247,6 +247,7 @@
         
         .quiz-btn { display: block; width: 100%; margin: 10px 0; padding: 15px; background: white; border: 2px solid #ff9a9e; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; color: #333; font-weight: bold;}
         .quiz-btn:hover { background: #ffeaa7; border-color: #fdcb6e; }
+        .quiz-btn.selected { background: #ffeaa7; border-color: #d63031; box-shadow: 0 0 0 2px #d63031 inset; }
 
         /* Nouveau jeu des frites */
         .fry { position: absolute; font-size: 50px; cursor: pointer; user-select: none; animation: pop 0.2s ease-out; }
@@ -431,12 +432,13 @@
         <!-- JEU 3 : LE QUIZ -->
         <div id="level-3" class="screen">
             <h2>Le Quiz de Nous</h2>
-            <p>Choisis l'affirmation qui est vraie :</p>
-            <button class="quiz-btn" onclick="checkQuiz(false)">Je t'aime presque autant que de te voler tes frites au resto.</button>
-            <button class="quiz-btn" onclick="checkQuiz(true)">Je t'ai toujours aimée, même avant qu'on se parle.</button>
-            <button class="quiz-btn" onclick="checkQuiz(false)">Je t'ai choisie parce que je n'avais plus d'abonnement Netflix.</button>
-            <button class="quiz-btn" onclick="checkQuiz(true)">Je t'aimerai tout le temps.</button>
-            <p id="error-msg-3" class="error-msg">Hééé, c'est faux ! (Même si c'était tentant 😂). Réessaie !</p>
+            <p>Sélectionne les <strong>deux</strong> affirmations qui sont vraies, puis valide :</p>
+            <button class="quiz-btn" data-correct="false" onclick="toggleQuiz(this)">Je t'aime presque autant que de te voler tes frites au resto.</button>
+            <button class="quiz-btn" data-correct="true" onclick="toggleQuiz(this)">Je t'ai toujours aimée, même avant qu'on se parle.</button>
+            <button class="quiz-btn" data-correct="false" onclick="toggleQuiz(this)">Je t'ai choisie parce que je n'avais plus d'abonnement Netflix.</button>
+            <button class="quiz-btn" data-correct="true" onclick="toggleQuiz(this)">Je t'aimerai tout le temps.</button>
+            <button class="action-btn" onclick="checkQuiz()">Valider</button>
+            <p id="error-msg-3" class="error-msg">Hééé, il en manque une (ou t'en as coché une fausse) ! Réessaie 🤭</p>
         </div>
 
         <!-- JEU 4 : LE JUSTE PRIX -->
@@ -690,6 +692,7 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
             document.getElementById('game-nav').style.display = 'block';
             
             if(level === 1) startHeartGame(); 
+            if(level === 3) document.querySelectorAll('#level-3 .quiz-btn').forEach(b => b.classList.remove('selected'));
             if(level === 4) document.getElementById('price-input').value = '';
             if(level === 5) document.getElementById('phrase-input').value = '';
             if(level === 6) startFryGame();
@@ -772,9 +775,23 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
         }
 
         // --- NIVEAU 3 (Quiz) ---
-        function checkQuiz(estVrai) {
-            if(estVrai) winLevel();
-            else document.getElementById('error-msg-3').style.display = 'block';
+        function toggleQuiz(btn) {
+            btn.classList.toggle('selected');
+        }
+
+        function checkQuiz() {
+            let buttons = document.querySelectorAll('#level-3 .quiz-btn');
+            let allCorrect = true;
+            buttons.forEach(btn => {
+                let isCorrect = btn.dataset.correct === 'true';
+                let isSelected = btn.classList.contains('selected');
+                if(isCorrect !== isSelected) allCorrect = false;
+            });
+            if(allCorrect) {
+                winLevel();
+            } else {
+                document.getElementById('error-msg-3').style.display = 'block';
+            }
         }
 
         // --- NIVEAU 4 (Juste Prix) ---
