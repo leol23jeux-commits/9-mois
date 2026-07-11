@@ -111,24 +111,50 @@
         #main-title { color: #ffffff; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-size: 36px; margin-bottom: 30px; display: none;}
         h2 { color: #d63031; }
 
-        /* --- MENU PRINCIPAL --- */
-        #menu-screen { display: none; flex-direction: column; align-items: center; gap: 20px; }
-        #menu-screen.active { display: flex; }
-        #menu-screen h1 { color: #fff; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-size: 32px; margin-bottom: 0; }
-        #menu-screen p { color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); margin-top: 0; }
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px;
-            padding: 25px 40px; font-size: 20px; cursor: pointer; color: #ffffff; font-weight: bold;
-            text-shadow: 1px 1px 5px rgba(0,0,0,1); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: 0.3s; width: 220px;
+        /* --- COEURS FLOTTANTS AMBIANTS --- */
+        .floating-hearts { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+        .floating-hearts span { position: absolute; bottom: -30px; opacity: 0; animation: floatUp linear infinite; }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.85; }
+            85% { opacity: 0.5; }
+            100% { transform: translateY(-360px) rotate(25deg); opacity: 0; }
         }
-        .menu-btn:hover { background: rgba(214, 48, 49, 0.9); border-color: #ff9a9e; transform: translateY(-3px); }
+
+        /* --- MENU PRINCIPAL --- */
+        #menu-screen { display: none; flex-direction: column; align-items: center; position: relative; min-height: 320px; width: 100%; }
+        #menu-screen.active { display: flex; }
+        .menu-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        #menu-screen h1 { color: #fff; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-size: 32px; margin-bottom: 0; }
+        #menu-screen p.menu-tagline { color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); margin-top: 0; }
+        .menu-btn {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 22px;
+            padding: 22px 30px; cursor: pointer; color: #ffffff;
+            text-shadow: 1px 1px 5px rgba(0,0,0,1); box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            width: 240px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        .menu-btn::after {
+            content: ""; position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+            transform: skewX(-20deg); transition: left 0.6s ease;
+        }
+        .menu-btn:hover::after { left: 125%; }
+        .menu-btn .menu-icon { font-size: 40px; }
+        .menu-btn .menu-title { font-size: 19px; font-weight: bold; }
+        .menu-btn .menu-sub { font-size: 12px; opacity: 0.9; font-weight: normal; }
+        .menu-btn:hover { transform: translateY(-6px) scale(1.05) rotate(-1deg); border-color: #ff9a9e; box-shadow: 0 10px 30px rgba(214, 48, 49, 0.5); }
+        .menu-btn:active { transform: scale(0.96); }
 
         #game-nav { display: none; margin-bottom: 15px; }
 
-        #hub { display: none; flex-direction: column; align-items: center; }
+        #hub { display: none; flex-direction: column; align-items: center; position: relative; width: 100%; min-height: 320px; }
         #hub.active { display: flex; }
+        .hub-content { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        #hub-subtitle { color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-size: 14px; margin: 0 0 15px; opacity: 0.9; }
 
         #hub-progress { width: 100%; max-width: 400px; margin: 0 auto 25px; }
         #hub-progress-bar {
@@ -179,7 +205,9 @@
         .level-card:nth-child(7) { animation-delay: 0.35s; }
         .level-card:nth-child(8) { animation-delay: 0.4s; }
 
-        .level-card:hover:not(.locked) { transform: translateY(-5px) scale(1.06); border-color: #ff9a9e; }
+        .level-card:hover:not(.locked) { border-color: #ff9a9e; }
+        .level-card:nth-child(odd):hover:not(.locked) { transform: translateY(-5px) scale(1.06) rotate(-3deg); }
+        .level-card:nth-child(even):hover:not(.locked) { transform: translateY(-5px) scale(1.06) rotate(3deg); }
         .level-card:active:not(.locked) { transform: scale(0.95); }
 
         .level-card.locked { cursor: not-allowed; opacity: 0.65; }
@@ -290,10 +318,28 @@
 
         <!-- MENU PRINCIPAL -->
         <div id="menu-screen" class="active">
-            <h1>Pour ma moitié ❤️</h1>
-            <p>Que veux-tu faire ?</p>
-            <button class="menu-btn" onclick="openLevels()">🎮 Les Épreuves</button>
-            <button class="menu-btn" onclick="openShop()">🎁 La Boutique</button>
+            <div class="floating-hearts">
+                <span style="left:8%; font-size:18px; animation-duration:7s; animation-delay:0s;">💗</span>
+                <span style="left:22%; font-size:14px; animation-duration:9s; animation-delay:1.5s;">❤️</span>
+                <span style="left:40%; font-size:20px; animation-duration:6.5s; animation-delay:0.7s;">💕</span>
+                <span style="left:58%; font-size:16px; animation-duration:8s; animation-delay:2.2s;">💗</span>
+                <span style="left:75%; font-size:15px; animation-duration:7.5s; animation-delay:1s;">❤️</span>
+                <span style="left:88%; font-size:19px; animation-duration:9.5s; animation-delay:3s;">💕</span>
+            </div>
+            <div class="menu-content">
+                <h1>Pour ma moitié ❤️</h1>
+                <p class="menu-tagline">Que veux-tu faire ?</p>
+                <button class="menu-btn" onclick="openLevels()">
+                    <span class="menu-icon">🎮</span>
+                    <span class="menu-title">Les Épreuves</span>
+                    <span class="menu-sub">7 défis + 1 bonus à découvrir</span>
+                </button>
+                <button class="menu-btn" onclick="openShop()">
+                    <span class="menu-icon">🎁</span>
+                    <span class="menu-title">La Boutique</span>
+                    <span class="menu-sub">Échange tes points contre des cadeaux</span>
+                </button>
+            </div>
         </div>
 
         <!-- MENU DES NIVEAUX -->
@@ -479,14 +525,23 @@
         <div id="final-surprise-screen" class="screen">
             <h2 style="color: #9b59b6; font-size: 28px;">Joyeux 9 mois mon amour ! 🎉</h2>
             <p style="font-style: italic; line-height: 1.8; white-space: pre-wrap; text-align: left; font-size: 18px;">Si tu lis ce message, c'est que tu es arrivée au bout de mon petit jeu. Mais la vraie raison de tout ça, c'est aujourd'hui...
-            
-Cela fait maintenant 9 mois que tu illumines ma vie. Neuf mois incroyables, intenses, et magiques. 
 
-Bien sûr, on le sait tous les deux, tout n'a pas toujours été facile. Il y a eu des moments un peu compliqués, des petits doutes ou des prises de tête, mais regarde où on en est aujourd'hui : plus forts que jamais. On a su surmonter tout ça parce que ce qu'il y a entre nous, c'est de l'amour pur. 
+Cela fait maintenant 9 mois que tu illumines ma vie. Neuf mois incroyables, intenses, et magiques - et pourtant j'ai l'impression que ça fait à la fois une éternité et à peine quelques jours. C'est étrange comme le temps se déforme quand on est avec la bonne personne.
 
-Chaque épreuve nous a rapprochés. Je te remercie d'être restée à mes côtés, de ne jamais m'avoir lâché, et de m'aimer comme tu le fais. Ces 9 premiers mois ne sont que le début d'une très longue histoire entre E et L.
+Je me souviens encore du tout premier jour, du 19 octobre 2025, comme si c'était hier. Je ne savais pas encore tout ce qui allait suivre, mais je savais déjà une chose : que tu étais différente, que tu étais la bonne. Et neuf mois plus tard, je peux te dire que je n'ai jamais eu autant raison de toute ma vie.
 
-Je suis tellement fier de nous. Je t'aime à la folie, aujourd'hui, demain, et pour tous les mois et les années à venir. ❤️✨</p>
+Bien sûr, on le sait tous les deux, tout n'a pas toujours été facile. Il y a eu des moments un peu compliqués, des petits doutes, des prises de tête, des soirées où on ne savait plus trop quoi se dire. Mais regarde où on en est aujourd'hui : plus forts que jamais. On a appris à se disputer sans se déchirer, à s'excuser sans faux-semblant, et à toujours revenir l'un vers l'autre. On a su surmonter tout ça parce que ce qu'il y a entre nous, ce n'est pas juste de l'amour, c'est de l'amour pur, celui qui choisit de rester même quand ce serait plus simple de partir.
+
+Chaque épreuve, chaque petite dispute, chaque fou rire nous a rapprochés un peu plus. Je te remercie d'être restée à mes côtés, de ne jamais m'avoir lâché, et de m'aimer comme tu le fais - avec patience, avec sincérité, et oui... même en acceptant que je pique tes frites au resto à chaque fois. Je ne changerai jamais sur ce point-là, tu le sais. 🍟😂
+
+J'aime tout, chez toi. J'aime ton rire qui me fait sourire même à travers un écran. J'aime ta manière de me rassurer sans même t'en rendre compte. J'aime qu'on puisse rire de tout, y compris de nos propres délires débiles comme "petit triplé" pour rien. J'aime surtout que, peu importe la journée qu'on a eue, il y ait toujours une place pour nous deux, rien que nous deux.
+
+Alors voilà : à la vie, à la mort, comme on se le dit depuis le début. Ces 9 premiers mois ne sont que le début d'une très longue histoire entre E et L. Je veux tous les prochains mois avec toi, toutes les prochaines années, tous les "d'accord mais juste une frite" et tous les silences complices dans la voiture. Je veux construire quelque chose de grand, avec toi, à ton rythme et au mien.
+
+Je suis tellement fier de nous, de tout ce qu'on a traversé et de tout ce qu'on est en train de devenir. Je t'aime à la folie, aujourd'hui, demain, et pour tous les mois et les années à venir.
+
+Joyeux 9 mois, mon amour. ❤️✨
+Ton L, qui t'aime un peu plus chaque jour.</p>
         </div>
     </div>
 
