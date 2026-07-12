@@ -9,14 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --rose: #ff7b8f;
-            --rose-light: #ffb3bd;
+            --rose: #ff6f91;
+            --rose-soft: #ff9a9e;
             --rose-dark: #c0392b;
+            --wine: #8e2a3b;
             --gold: #ffd89b;
             --glass: rgba(255, 255, 255, 0.14);
             --glass-strong: rgba(255, 255, 255, 0.24);
             --glass-border: rgba(255, 255, 255, 0.4);
-            --shadow-soft: 0 10px 34px rgba(0, 0, 0, 0.4);
+            --shadow-soft: 0 10px 35px rgba(0, 0, 0, 0.4);
+            /* palette vive pour les accents colorés */
+            --c1: #ff5e78; /* corail */
+            --c2: #ff9f43; /* orange */
+            --c3: #ffd93d; /* jaune doré */
+            --c4: #6bcf7f; /* vert menthe */
+            --c5: #4fc3e8; /* bleu ciel */
+            --c6: #8e7bff; /* violet */
+            --c7: #ff6fb5; /* fuchsia */
+            --c8: #ffb84f; /* ambre (bonus) */
         }
 
         * { box-sizing: border-box; }
@@ -35,16 +45,16 @@
         body::before {
             content: "";
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(180deg, rgba(20,10,20,0.55) 0%, rgba(10,5,15,0.75) 100%);
+            background: linear-gradient(180deg, rgba(20,5,15,0.55) 0%, rgba(10,5,10,0.72) 60%, rgba(5,2,8,0.85) 100%);
             z-index: -1;
         }
 
-        h1, h2 { font-family: 'Playfair Display', serif; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 
         /* --- ÉCRAN DE MOT DE PASSE --- */
         #login-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 30%, #201018 0%, #0c0710 70%);
+            background: radial-gradient(circle at 50% 20%, #2a0f18 0%, #0d0508 75%);
             z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: white; transition: opacity 0.8s ease-out;
@@ -53,32 +63,34 @@
         .login-box {
             background: var(--glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             padding: 45px 35px; border-radius: 26px; border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-soft); width: 80%; max-width: 400px;
+            box-shadow: var(--shadow-soft); width: 82%; max-width: 400px;
+            animation: cardIn 0.7s ease backwards;
         }
 
         #login-screen h1 {
-            font-size: 32px; margin-top: 0; margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--rose-light), var(--gold));
+            font-size: 42px; margin-top: 0; margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--gold), var(--rose-soft));
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
+        #login-screen p { opacity: 0.85; font-size: 15px; }
 
         #site-password {
-            background: rgba(0, 0, 0, 0.35); color: white; border: 1.5px solid var(--rose);
+            background: rgba(0, 0, 0, 0.35); color: white; border: 1px solid var(--glass-border);
             padding: 15px; border-radius: 14px; font-size: 18px; text-align: center; width: 80%;
             margin-bottom: 20px; outline: none; transition: 0.3s; font-family: 'Quicksand', sans-serif;
         }
-        #site-password:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(255, 216, 155, 0.4); }
+        #site-password:focus { border-color: var(--rose-soft); box-shadow: 0 0 15px rgba(255, 154, 158, 0.5); }
 
         /* --- L'ÉCRAN D'INTRODUCTION NOIR --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 40%, #1a0d14 0%, #000000 75%);
+            background: radial-gradient(circle at 50% 40%, #1a0810 0%, #050203 80%);
             z-index: 9999;
-            display: none;
+            display: none; 
             flex-direction: column; justify-content: center; align-items: center;
             color: white; transition: opacity 1.5s ease-out;
         }
-
+        
         @keyframes heartbeat {
             0% { transform: scale(1); }
             15% { transform: scale(1.15); }
@@ -91,19 +103,19 @@
         #intro-heart {
             position: relative; width: 100px; height: 90px; cursor: pointer;
             margin-bottom: 30px; animation: heartbeat 1.5s infinite;
-            filter: drop-shadow(0 0 25px rgba(255, 123, 143, 0.6));
+            filter: drop-shadow(0 0 25px rgba(255, 111, 145, 0.6));
         }
-
+        
         .heart-shape { position: absolute; width: 100px; height: 90px; }
         .heart-shape:before, .heart-shape:after {
             position: absolute; content: ""; left: 50px; top: 0; width: 50px; height: 80px;
-            background: linear-gradient(135deg, var(--rose-light), var(--rose-dark));
+            background: linear-gradient(135deg, var(--rose), var(--rose-dark));
             border-radius: 50px 50px 0 0;
             transform: rotate(-45deg); transform-origin: 0 100%;
-            box-shadow: 0 0 25px rgba(231, 76, 60, 0.6);
+            box-shadow: 0 0 25px rgba(231, 76, 60, 0.65); 
         }
         .heart-shape:after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
-
+        
         .heart-text {
             position: absolute; z-index: 10; top: 20px; left: 0; width: 100%;
             font-family: 'Playfair Display', serif; font-style: italic; font-size: 26px;
@@ -113,7 +125,7 @@
         .intro-text {
             font-family: 'Playfair Display', serif; font-style: italic;
             font-size: 30px; margin-top: 20px; text-shadow: 0 0 15px rgba(255,255,255,0.3);
-            background: linear-gradient(135deg, #fff, var(--rose-light));
+            background: linear-gradient(135deg, #fff, var(--gold));
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
@@ -134,16 +146,16 @@
 
         /* --- STYLES DU JEU PRINCIPAL --- */
         #main-game { display: none; padding: 20px; width: 100%; max-width: 600px; box-sizing: border-box; }
-
+        
         #main-title {
-            color: #ffffff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); font-size: 34px; margin-bottom: 26px;
-            display: none; letter-spacing: 0.5px;
+            color: #ffffff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); font-size: 32px; margin-bottom: 25px;
+            display: none; font-style: italic; letter-spacing: 0.5px;
         }
-        h2 { color: #fff; font-size: 26px; text-shadow: 1px 1px 6px rgba(0,0,0,0.5); }
+        h2 { color: var(--gold); text-shadow: 1px 1px 6px rgba(0,0,0,0.5); font-size: 24px; }
 
         /* --- COEURS FLOTTANTS AMBIANTS --- */
         .floating-hearts { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-        .floating-hearts span { position: absolute; bottom: -30px; opacity: 0; animation: floatUp linear infinite; filter: drop-shadow(0 0 6px rgba(255,123,143,0.5)); }
+        .floating-hearts span { position: absolute; bottom: -30px; opacity: 0; animation: floatUp linear infinite; }
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
             10% { opacity: 0.85; }
@@ -155,107 +167,124 @@
         #menu-screen { display: none; flex-direction: column; align-items: center; position: relative; min-height: 340px; width: 100%; }
         #menu-screen.active { display: flex; }
         .menu-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+        .menu-glow {
+            position: absolute; width: 280px; height: 280px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,154,158,0.35), transparent 70%);
+            filter: blur(6px); top: -10%; left: 50%; transform: translateX(-50%); z-index: 0; pointer-events: none;
+        }
+        .menu-monogram {
+            width: 62px; height: 62px; border-radius: 50%; margin: 0 auto 6px;
+            background: radial-gradient(circle, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
+            border: 1.5px solid var(--glass-border); display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 20px; color: #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4); animation: heartbeat 2.5s infinite;
+        }
         #menu-screen h1 {
             font-size: 34px; margin-bottom: 0; font-style: italic;
-            background: linear-gradient(135deg, #fff, var(--rose-light) 60%, var(--gold));
+            background: linear-gradient(135deg, #fff 20%, var(--gold) 60%, var(--rose-soft) 100%);
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.4);
         }
-        #menu-screen p.menu-tagline { color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); margin-top: 0; opacity: 0.9; letter-spacing: 0.5px; }
+        #menu-screen p.menu-tagline { color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); margin-top: 0; letter-spacing: 0.5px; opacity: 0.9; }
 
         .menu-btn {
             position: relative; overflow: hidden;
-            background: linear-gradient(135deg, var(--glass-strong), var(--glass));
+            background: linear-gradient(160deg, var(--glass-strong), var(--glass));
             backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            border: 1.5px solid var(--glass-border); border-radius: 26px;
-            padding: 24px 30px; cursor: pointer; color: #ffffff;
+            border: 1.5px solid var(--glass-border); border-radius: 24px;
+            padding: 20px 44px 20px 24px; cursor: pointer; color: #ffffff; font-family: 'Quicksand', sans-serif;
             text-shadow: 1px 1px 5px rgba(0,0,0,1); box-shadow: var(--shadow-soft);
-            transition: transform 0.35s cubic-bezier(.2,.9,.3,1.3), box-shadow 0.35s ease, border-color 0.35s ease;
-            width: 250px; display: flex; flex-direction: column; align-items: center; gap: 5px;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+            width: 270px; display: flex; flex-direction: row; align-items: center; gap: 16px; text-align: left;
+            animation: cardIn 0.6s ease backwards;
         }
+        .menu-btn.theme-levels { background: linear-gradient(160deg, rgba(255,159,67,0.35), rgba(255,94,120,0.25)); animation-delay: 0.1s; }
+        .menu-btn.theme-shop { background: linear-gradient(160deg, rgba(142,123,255,0.35), rgba(255,111,181,0.25)); animation-delay: 0.25s; }
         .menu-btn::before {
-            content: ""; position: absolute; inset: 0; border-radius: 26px; padding: 1.5px;
-            background: linear-gradient(135deg, var(--rose-light), transparent 40%, var(--gold));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude;
-            opacity: 0; transition: opacity 0.35s ease;
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.18), transparent);
+            border-radius: 24px 24px 50% 50% / 24px 24px 20px 20px; pointer-events: none;
         }
-        .menu-btn:hover::before { opacity: 1; }
         .menu-btn::after {
             content: ""; position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
             background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
             transform: skewX(-20deg); transition: left 0.6s ease;
         }
         .menu-btn:hover::after { left: 125%; }
-        .menu-btn .menu-icon { font-size: 42px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); }
-        .menu-btn .menu-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
-        .menu-btn .menu-sub { font-size: 12.5px; opacity: 0.9; font-weight: 500; }
-        .menu-btn:hover { transform: translateY(-8px) scale(1.05); border-color: var(--rose-light); box-shadow: 0 16px 40px rgba(214, 48, 49, 0.45); }
+        .menu-btn .menu-icon {
+            font-size: 28px; flex-shrink: 0; width: 58px; height: 58px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+        }
+        .menu-btn.theme-levels .menu-icon { background: linear-gradient(135deg, var(--c2), var(--c1)); }
+        .menu-btn.theme-shop .menu-icon { background: linear-gradient(135deg, var(--c6), var(--c7)); }
+        .menu-btn .menu-text { display: flex; flex-direction: column; gap: 2px; }
+        .menu-btn .menu-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; }
+        .menu-btn .menu-sub { font-size: 11.5px; opacity: 0.85; font-weight: 500; }
+        .menu-btn .menu-arrow {
+            position: absolute; right: 16px; top: 50%; font-size: 18px;
+            transform: translateY(-50%) translateX(8px); opacity: 0; transition: all 0.3s ease;
+        }
+        .menu-btn:hover .menu-arrow { opacity: 1; transform: translateY(-50%) translateX(0); }
+        .menu-btn.theme-levels:hover { transform: translateY(-6px) scale(1.04); border-color: var(--c2); box-shadow: 0 15px 35px rgba(255,94,120,0.5); }
+        .menu-btn.theme-shop:hover { transform: translateY(-6px) scale(1.04); border-color: var(--c6); box-shadow: 0 15px 35px rgba(142,123,255,0.5); }
         .menu-btn:active { transform: scale(0.96); }
 
         #game-nav { display: none; margin-bottom: 18px; }
-        #game-nav .action-btn { background: var(--glass-strong); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid var(--glass-border); box-shadow: none; }
-        #game-nav .action-btn:hover { background: rgba(255,255,255,0.35); }
 
         #hub { display: none; flex-direction: column; align-items: center; position: relative; width: 100%; min-height: 320px; }
         #hub.active { display: flex; }
         .hub-content { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; }
         #hub-subtitle {
-            color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-size: 14px; margin: 0 0 18px;
-            opacity: 0.95; font-family: 'Playfair Display', serif; font-style: italic;
+            color: var(--gold); text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-size: 14px;
+            margin: 0 0 18px; opacity: 0.95; font-style: italic; font-family: 'Playfair Display', serif;
         }
 
-        #hub-progress { width: 100%; max-width: 400px; margin: 0 auto 28px; }
-        #hub-progress-bar {
-            background: rgba(255,255,255,0.2); border-radius: 20px; height: 14px;
-            overflow: hidden; border: 1px solid var(--glass-border); box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
-        }
-        #hub-progress-fill {
-            background: linear-gradient(90deg, var(--rose-light), var(--rose), var(--gold));
-            background-size: 200% 100%;
-            height: 100%; width: 0%;
-            transition: width 0.6s ease; border-radius: 20px;
-            animation: shimmerBar 3s linear infinite;
-        }
-        @keyframes shimmerBar {
-            0% { background-position: 0% 0; }
-            100% { background-position: 200% 0; }
-        }
+        #hub-progress { width: 100%; max-width: 400px; margin: 0 auto 22px; text-align: center; }
         #hub-progress-text {
             color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            font-size: 13.5px; margin-top: 9px; font-weight: 600; letter-spacing: 0.3px;
+            font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
         }
 
-        #hub-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 100px));
-            gap: 18px; justify-content: center;
+        #hub-path { position: relative; display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 380px; margin: 0 auto; }
+        #hub-path::before {
+            content: ""; position: absolute; left: 33px; top: 28px; bottom: 28px; width: 4px;
+            background: rgba(255,255,255,0.22); border-radius: 4px; z-index: 0;
         }
+        #hub-path-fill {
+            position: absolute; left: 33px; top: 28px; width: 4px; height: 0px;
+            background: linear-gradient(180deg, var(--c1), var(--c3), var(--c5), var(--c6), var(--c8));
+            background-size: 100% 300%; border-radius: 4px; z-index: 0;
+            transition: height 0.8s cubic-bezier(0.3, 0.9, 0.4, 1.2);
+            box-shadow: 0 0 14px rgba(255,255,255,0.55);
+            animation: pathShimmer 4s linear infinite;
+        }
+        @keyframes pathShimmer { 0% { background-position: 0 0%; } 100% { background-position: 0 300%; } }
 
         @keyframes cardIn {
             from { opacity: 0; transform: translateY(20px) scale(0.9); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes glowPulse {
-            0%, 100% { box-shadow: var(--shadow-soft), 0 0 0px rgba(255,123,143,0); }
-            50% { box-shadow: var(--shadow-soft), 0 0 26px rgba(255,123,143,0.95); }
+            0%, 100% { box-shadow: var(--shadow-soft), 0 0 0px rgba(255,154,158,0); }
+            50% { box-shadow: var(--shadow-soft), 0 0 26px rgba(255,154,158,0.95); }
         }
 
         .level-card {
-            position: relative; isolation: isolate;
+            position: relative; overflow: hidden; z-index: 1;
             background: linear-gradient(160deg, var(--glass-strong), var(--glass));
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid var(--glass-border); border-radius: 20px;
-            padding: 18px 8px; cursor: pointer;
-            transition: transform 0.3s cubic-bezier(.2,.9,.3,1.3), box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-            color: #ffffff; text-shadow: 1px 1px 5px rgba(0,0,0,1);
+            border: 1.5px solid var(--glass-border); border-radius: 18px;
+            padding: 10px 18px 10px 10px; cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+            color: #ffffff; text-shadow: 1px 1px 5px rgba(0,0,0,1); font-family: 'Quicksand', sans-serif;
             box-shadow: var(--shadow-soft);
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            animation: cardIn 0.5s ease backwards; overflow: hidden;
+            display: flex; flex-direction: row; align-items: center; gap: 14px; text-align: left;
+            width: 100%; animation: cardIn 0.5s ease backwards;
         }
         .level-card::before {
             content: ""; position: absolute; top: 0; left: 0; right: 0; height: 45%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.25), transparent);
-            border-radius: 20px 20px 50% 50% / 20px 20px 20px 20px; pointer-events: none;
+            background: linear-gradient(180deg, rgba(255,255,255,0.15), transparent); pointer-events: none;
         }
         .level-card:nth-child(1) { animation-delay: 0.05s; }
         .level-card:nth-child(2) { animation-delay: 0.1s; }
@@ -266,77 +295,96 @@
         .level-card:nth-child(7) { animation-delay: 0.35s; }
         .level-card:nth-child(8) { animation-delay: 0.4s; }
 
-        .level-card:hover:not(.locked) { border-color: var(--rose-light); }
-        .level-card:nth-child(odd):hover:not(.locked) { transform: translateY(-6px) scale(1.07) rotate(-3deg); }
-        .level-card:nth-child(even):hover:not(.locked) { transform: translateY(-6px) scale(1.07) rotate(3deg); }
-        .level-card:active:not(.locked) { transform: scale(0.95); }
+        .level-card:hover:not(.locked) { border-color: var(--rose-soft); transform: translateX(4px); }
+        .level-card:active:not(.locked) { transform: scale(0.97); }
 
-        .level-card.locked { cursor: not-allowed; opacity: 0.6; }
+        .level-card.locked { cursor: not-allowed; opacity: 0.55; }
         .level-card.locked .card-icon { filter: grayscale(1) brightness(0.6); }
 
-        .level-card.unlocked { border-color: var(--rose-light); animation: cardIn 0.5s ease backwards, glowPulse 2.2s ease-in-out infinite; }
+        .level-card.unlocked { border-color: var(--rose-soft); animation: cardIn 0.5s ease backwards, glowPulse 2.2s ease-in-out infinite; }
 
-        .level-card.completed { border-color: #6fe3a1; opacity: 1; }
+        .level-card.completed { border-color: #6de89a; opacity: 1; }
 
-        .card-icon { font-size: 33px; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35)); }
-        .card-label { font-size: 12.5px; font-weight: 700; font-family: 'Playfair Display', serif; }
+        .card-label { display: flex; flex-direction: column; gap: 2px; }
+        .card-label .status-text { font-size: 11px; font-weight: 500; opacity: 0.8; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        .level-card.locked .status-text::after { content: "Verrouillé 🔒"; }
+        .level-card.unlocked .status-text::after { content: "À toi de jouer !"; color: var(--gold); }
+        .level-card.completed .status-text::after { content: "Terminé !"; color: #6de89a; }
+
+        .card-icon {
+            font-size: 24px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); flex-shrink: 0;
+        }
+        #btn-1 { --accent-a: var(--c1); --accent-b: #ff8fa3; }
+        #btn-2 { --accent-a: var(--c2); --accent-b: #ffc36e; }
+        #btn-3 { --accent-a: var(--c3); --accent-b: #ffe98a; }
+        #btn-4 { --accent-a: var(--c4); --accent-b: #a3e6ae; }
+        #btn-5 { --accent-a: var(--c5); --accent-b: #9fe0f5; }
+        #btn-6 { --accent-a: var(--c6); --accent-b: #bcb0ff; }
+        #btn-7 { --accent-a: var(--c7); --accent-b: #ffa3d1; }
+        #btn-8 { --accent-a: var(--c8); --accent-b: var(--gold); }
+
+        .level-card.unlocked { border-color: var(--accent-a); box-shadow: var(--shadow-soft), 0 0 20px var(--accent-a); animation: cardIn 0.5s ease backwards, glowPulse 2.2s ease-in-out infinite; }
+        .level-card:hover:not(.locked) { border-color: var(--accent-a); }
+
+        .card-lock { display: none; font-size: 16px; margin-left: auto; }
+        .level-card.locked .card-lock { display: none; }
 
         .card-lock { display: none; font-size: 18px; margin-top: -4px; }
         .level-card.locked .card-lock { display: block; }
 
         .card-check {
             display: none; position: absolute; top: -8px; right: -8px;
-            background: linear-gradient(135deg, #6fe3a1, #2ecc71); color: white; border-radius: 50%; width: 25px; height: 25px;
+            background: linear-gradient(135deg, #6de89a, #2ecc71); color: white; border-radius: 50%; width: 25px; height: 25px;
             align-items: center; justify-content: center; font-size: 13px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5); text-shadow: none; z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5); text-shadow: none;
         }
         .level-card.completed .card-check { display: flex; }
 
         .screen {
-            display: none;
-            background: linear-gradient(160deg, rgba(255,255,255,0.97), rgba(255,250,248,0.95));
-            padding: 32px 26px; border-radius: 24px; box-shadow: var(--shadow-soft);
-            width: 100%; box-sizing: border-box; margin-top: 10px; position: relative;
+            display: none; background: rgba(255, 250, 248, 0.97);
+            padding: 32px 26px; border-radius: 22px; box-shadow: var(--shadow-soft);
+            width: 100%; box-sizing: border-box; margin-top: 12px; position: relative;
             border: 1px solid rgba(255,255,255,0.6);
         }
-        .active { display: block; }
+        .active { display: block; animation: cardIn 0.4s ease; }
 
         input:not(#site-password) {
-            padding: 13px; font-size: 17px; width: 80%; max-width: 220px; text-align: center;
-            border: 2px solid var(--rose); border-radius: 14px; margin-bottom: 10px; outline: none;
-            font-family: 'Quicksand', sans-serif; font-weight: 600; color: #333;
+            padding: 13px; font-size: 18px; width: 80%; max-width: 200px; text-align: center;
+            border: 2px solid var(--rose-soft); border-radius: 12px; margin-bottom: 10px; outline: none;
+            font-family: 'Quicksand', sans-serif; font-weight: 600;
         }
-        input:not(#site-password):focus { border-color: var(--rose-dark); box-shadow: 0 0 10px rgba(255,123,143,0.35); }
+        input:not(#site-password):focus { border-color: var(--rose-dark); box-shadow: 0 0 0 3px rgba(192,57,43,0.15); }
 
         button.action-btn {
-            padding: 13px 28px; font-size: 15.5px;
-            background: linear-gradient(135deg, var(--rose), var(--rose-dark));
-            color: white; border: none; border-radius: 50px; cursor: pointer; margin-top: 10px;
+            padding: 13px 28px; font-size: 15px; font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--rose), var(--rose-dark)); color: white;
+            border: none; border-radius: 50px; cursor: pointer; margin-top: 12px;
             transition: transform 0.25s ease, box-shadow 0.25s ease; z-index: 10; position: relative;
-            font-weight: 700; font-family: 'Quicksand', sans-serif; letter-spacing: 0.3px;
-            box-shadow: 0 6px 18px rgba(192, 57, 43, 0.4);
+            font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 6px 16px rgba(192,57,43,0.35);
         }
-        button.action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(192, 57, 43, 0.5); }
+        button.action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(192,57,43,0.5); }
         button.action-btn:active { transform: translateY(0) scale(0.97); }
-        button.action-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
-        .error-msg { color: var(--rose-dark); display: none; margin-top: 12px; font-weight: 700; }
+        button.action-btn:disabled { background: #d8d8d8; cursor: not-allowed; transform: none; box-shadow: none; }
+        .error-msg { color: var(--rose-dark); display: none; margin-top: 10px; font-weight: 700; }
 
         /* Jeux Spécifiques */
         #game-area-1, #game-area-6 {
             position: relative; height: 350px; width: 100%;
-            border: 2px dashed var(--rose); margin-top: 20px; overflow: hidden; border-radius: 16px;
-            background: linear-gradient(160deg, rgba(255,123,143,0.05), rgba(255,216,155,0.05));
+            border: 2px dashed var(--rose-soft); margin-top: 20px; overflow: hidden; border-radius: 16px;
+            background: linear-gradient(160deg, rgba(255,154,158,0.08), rgba(255,255,255,0.4));
         }
         .heart { position: absolute; top: 0; left: 0; font-size: 45px; cursor: pointer; user-select: none; transition: transform 0.8s ease-in-out; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25)); }
-
+        
         .quiz-btn {
-            display: block; width: 100%; margin: 10px 0; padding: 15px;
-            background: white; border: 2px solid var(--rose); border-radius: 14px;
-            font-size: 15.5px; cursor: pointer; transition: 0.2s; color: #333; font-weight: 600;
-            font-family: 'Quicksand', sans-serif;
+            display: block; width: 100%; margin: 10px 0; padding: 15px; background: white;
+            border: 2px solid var(--rose-soft); border-radius: 14px; font-size: 15px; cursor: pointer;
+            transition: 0.2s; color: #333; font-weight: 600; font-family: 'Quicksand', sans-serif;
         }
-        .quiz-btn:hover { background: #fff2ec; border-color: var(--gold); }
-        .quiz-btn.selected { background: linear-gradient(135deg, #ffe9c9, #ffd6dc); border-color: var(--rose-dark); box-shadow: 0 0 0 2px var(--rose-dark) inset; }
+        .quiz-btn:hover { background: #fff3e0; border-color: var(--gold); transform: translateY(-2px); }
+        .quiz-btn.selected { background: linear-gradient(135deg, #fff3e0, #ffe0e6); border-color: var(--rose-dark); box-shadow: 0 0 0 2px var(--rose-dark) inset; }
 
         /* Jeu des frites */
         .fry { position: absolute; font-size: 50px; cursor: pointer; user-select: none; animation: pop 0.2s ease-out; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25)); }
@@ -347,48 +395,94 @@
 
         #boss-area { position: relative; height: 200px; margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; }
         #btn-yes {
-            font-size: 22px; padding: 16px 32px; background: linear-gradient(135deg, #6fe3a1, #2ecc71);
+            font-size: 22px; padding: 16px 32px; background: linear-gradient(135deg, #6de89a, #2ecc71);
             color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 700;
-            transition: 0.2s; font-family: 'Quicksand', sans-serif; box-shadow: 0 6px 18px rgba(46,204,113,0.4);
+            transition: 0.25s; box-shadow: 0 8px 20px rgba(46,204,113,0.4); font-family: 'Quicksand', sans-serif;
         }
         #btn-yes:hover { transform: scale(1.1); }
         #btn-no {
-            font-size: 22px; padding: 16px 32px; background: linear-gradient(135deg, #ff8577, #e74c3c);
+            font-size: 22px; padding: 16px 32px; background: linear-gradient(135deg, #ff8a8a, #e74c3c);
             color: white; border: none; border-radius: 50px; cursor: pointer; position: absolute;
             transition: transform 0.2s ease-out; font-weight: 700; font-family: 'Quicksand', sans-serif;
-            box-shadow: 0 6px 18px rgba(231,76,60,0.4);
+            box-shadow: 0 8px 20px rgba(231,76,60,0.4);
         }
 
         /* --- NIVEAU BONUS : PUZZLE --- */
         #puzzle-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px;
-            width: min(300px, 85vw); aspect-ratio: 1 / 1; margin: 20px auto;
-            border: 4px solid var(--rose); border-radius: 16px; overflow: hidden;
-            box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+            width: min(300px, 85vw); aspect-ratio: 1 / 1; margin: 22px auto;
+            border: 4px solid var(--rose-dark); border-radius: 16px; overflow: hidden;
+            box-shadow: var(--shadow-soft);
         }
         .puzzle-tile {
             width: 100%; height: 100%;
             /* 👇 METS LE NOM DE VOTRE PHOTO POUR LE PUZZLE ICI 👇 */
             background-image: url('IMG_5236.jpeg');
             background-size: 300% 300%; cursor: pointer; box-sizing: border-box;
-            border: 3px solid transparent; transition: border-color 0.2s ease;
+            border: 3px solid transparent; transition: border-color 0.2s ease, transform 0.15s ease;
         }
-        .puzzle-tile.selected { border-color: #2ecc71; }
+        .puzzle-tile.selected { border-color: #2ecc71; transform: scale(0.95); }
 
         /* --- BOUTIQUE --- */
         .shop-item {
-            background: linear-gradient(160deg, #ffffff, #fff6f2);
-            border: 2px solid var(--rose); border-radius: 20px;
-            padding: 22px; width: 155px; box-shadow: 0 8px 22px rgba(0,0,0,0.12);
-            transition: transform 0.3s ease;
+            background: linear-gradient(160deg, #ffffff, #fff5f5);
+            border: 2px solid var(--rose-soft); border-radius: 20px;
+            padding: 22px; width: 155px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.25s ease;
         }
         .shop-item:hover { transform: translateY(-4px); }
         .shop-item .icon {
-            font-size: 46px; margin: 0 auto 8px; width: 72px; height: 72px;
-            display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #ffe9c9, #ffd6dc); border-radius: 50%;
+            font-size: 34px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
+            width: 64px; height: 64px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; box-shadow: 0 6px 14px rgba(0,0,0,0.2);
         }
-        .shop-item h4 { font-family: 'Playfair Display', serif; margin: 6px 0 2px; }
+        .shop-item.socks { border-color: var(--c4); }
+        .shop-item.socks .icon { background: linear-gradient(135deg, var(--c4), #a3e6ae); }
+        .shop-item.bracelet { border-color: var(--c6); }
+        .shop-item.bracelet .icon { background: linear-gradient(135deg, var(--c6), var(--c7)); }
+        .shop-item h4 { margin: 8px 0 4px; color: var(--rose-dark); }
+
+        @keyframes popScale {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.3) rotate(-6deg); }
+            70% { transform: scale(0.95) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        @keyframes cardFlash {
+            0% { box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+            40% { box-shadow: 0 0 0 10px rgba(255,217,61,0.55), 0 8px 20px rgba(0,0,0,0.1); }
+            100% { box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        }
+        .shop-item.purchased { animation: cardFlash 0.7s ease; }
+        .shop-item.purchased .icon { animation: popScale 0.7s ease; }
+
+        /* --- CONFETTIS & CÉLÉBRATIONS --- */
+        .confetti-burst {
+            position: fixed; font-size: 20px; pointer-events: none; z-index: 100000;
+            animation: flyOut 1s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+        .confetti-fall {
+            position: fixed; top: -30px; pointer-events: none; z-index: 100000;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(115vh) rotate(360deg); opacity: 0.3; }
+        }
+        .celebration-toast {
+            position: fixed; top: 16%; left: 50%; transform: translate(-50%, -20px);
+            background: linear-gradient(135deg, var(--gold), var(--rose-soft));
+            color: #5c1a1a; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 17px;
+            padding: 16px 26px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            opacity: 0; transition: opacity 0.5s ease, transform 0.5s ease; z-index: 100001;
+            text-align: center; max-width: 82vw;
+        }
+        .celebration-toast.show { opacity: 1; transform: translate(-50%, 0); }
+        #shop-points {
+            display: inline-block; background: linear-gradient(135deg, var(--gold), var(--rose-soft));
+            padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 20px;
+            color: #5c1a1a; box-shadow: 0 6px 16px rgba(0,0,0,0.15); margin: 10px 0 20px;
+        }
     </style>
 </head>
 <body>
@@ -396,8 +490,8 @@
     <!-- ÉCRAN DE MOT DE PASSE -->
     <div id="login-screen">
         <div class="login-box">
-            <h1>Accès Réservé 🔒</h1>
-            <p style="margin-bottom: 25px; font-size: 15px; opacity: 0.85;">Veuillez entrer le mot de passe secret pour accéder au site.</p>
+            <h1>Accès Réservé</h1>
+            <p style="margin-bottom: 25px;">Entre le mot de passe secret pour accéder au site.</p>
             <input type="password" id="site-password" placeholder="Mot de passe...">
             <br>
             <button class="action-btn" onclick="checkLogin()">Entrer</button>
@@ -427,24 +521,32 @@
         <div id="menu-screen" class="active">
             <div class="floating-hearts">
                 <span style="left:8%; font-size:18px; animation-duration:7s; animation-delay:0s;">💗</span>
-                <span style="left:22%; font-size:14px; animation-duration:9s; animation-delay:1.5s;">❤️</span>
-                <span style="left:40%; font-size:20px; animation-duration:6.5s; animation-delay:0.7s;">💕</span>
-                <span style="left:58%; font-size:16px; animation-duration:8s; animation-delay:2.2s;">💗</span>
-                <span style="left:75%; font-size:15px; animation-duration:7.5s; animation-delay:1s;">❤️</span>
+                <span style="left:22%; font-size:14px; animation-duration:9s; animation-delay:1.5s;">✨</span>
+                <span style="left:40%; font-size:20px; animation-duration:6.5s; animation-delay:0.7s;">💛</span>
+                <span style="left:58%; font-size:16px; animation-duration:8s; animation-delay:2.2s;">💜</span>
+                <span style="left:75%; font-size:15px; animation-duration:7.5s; animation-delay:1s;">💙</span>
                 <span style="left:88%; font-size:19px; animation-duration:9.5s; animation-delay:3s;">💕</span>
             </div>
             <div class="menu-content">
-                <h1>Pour ma moitié ❤️</h1>
+                <div class="menu-glow"></div>
+                <div class="menu-monogram">E+L</div>
+                <h1>Pour ma moitié</h1>
                 <p class="menu-tagline">Que veux-tu faire ?</p>
-                <button class="menu-btn" onclick="openLevels()">
+                <button class="menu-btn theme-levels" onclick="openLevels()">
                     <span class="menu-icon">🎮</span>
-                    <span class="menu-title">Les Épreuves</span>
-                    <span class="menu-sub">7 défis + 1 bonus à découvrir</span>
+                    <span class="menu-text">
+                        <span class="menu-title">Les Épreuves</span>
+                        <span class="menu-sub">7 défis + 1 bonus à découvrir</span>
+                    </span>
+                    <span class="menu-arrow">➜</span>
                 </button>
-                <button class="menu-btn" onclick="openShop()">
+                <button class="menu-btn theme-shop" onclick="openShop()">
                     <span class="menu-icon">🎁</span>
-                    <span class="menu-title">La Boutique</span>
-                    <span class="menu-sub">Échange tes points contre des cadeaux</span>
+                    <span class="menu-text">
+                        <span class="menu-title">La Boutique</span>
+                        <span class="menu-sub">Échange tes points contre des cadeaux</span>
+                    </span>
+                    <span class="menu-arrow">➜</span>
                 </button>
             </div>
         </div>
@@ -453,63 +555,63 @@
         <div id="hub">
             <div class="floating-hearts">
                 <span style="left:12%; font-size:16px; animation-duration:8s; animation-delay:0.3s;">💗</span>
-                <span style="left:30%; font-size:14px; animation-duration:6.5s; animation-delay:2s;">❤️</span>
-                <span style="left:50%; font-size:18px; animation-duration:9s; animation-delay:0.8s;">💕</span>
-                <span style="left:68%; font-size:15px; animation-duration:7s; animation-delay:2.6s;">💗</span>
-                <span style="left:85%; font-size:17px; animation-duration:8.5s; animation-delay:1.3s;">❤️</span>
+                <span style="left:30%; font-size:14px; animation-duration:6.5s; animation-delay:2s;">✨</span>
+                <span style="left:50%; font-size:18px; animation-duration:9s; animation-delay:0.8s;">💛</span>
+                <span style="left:68%; font-size:15px; animation-duration:7s; animation-delay:2.6s;">💜</span>
+                <span style="left:85%; font-size:17px; animation-duration:8.5s; animation-delay:1.3s;">💙</span>
             </div>
             <div class="hub-content">
                 <p id="hub-subtitle">Clique sur la prochaine étape brillante ✨</p>
                 <div id="hub-progress">
-                    <div id="hub-progress-bar"><div id="hub-progress-fill"></div></div>
                     <p id="hub-progress-text">0/8 épreuves complétées</p>
                 </div>
-                <div id="hub-grid">
+                <div id="hub-path">
+                    <div id="hub-path-fill"></div>
                     <button class="level-card unlocked" id="btn-1" onclick="startLevel(1)">
                         <span class="card-icon">❤️</span>
-                        <span class="card-label">Niveau 1</span>
+                        <span class="card-label">Niveau 1<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-2" onclick="startLevel(2)" disabled>
                         <span class="card-icon">🔢</span>
-                        <span class="card-label">Niveau 2</span>
+                        <span class="card-label">Niveau 2<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-3" onclick="startLevel(3)" disabled>
                         <span class="card-icon">❓</span>
-                        <span class="card-label">Niveau 3</span>
+                        <span class="card-label">Niveau 3<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-4" onclick="startLevel(4)" disabled>
                         <span class="card-icon">⏳</span>
-                        <span class="card-label">Niveau 4</span>
+                        <span class="card-label">Niveau 4<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-5" onclick="startLevel(5)" disabled>
                         <span class="card-icon">🕵️</span>
-                        <span class="card-label">Niveau 5</span>
+                        <span class="card-label">Niveau 5<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-6" onclick="startLevel(6)" disabled>
                         <span class="card-icon">🍟</span>
-                        <span class="card-label">Niveau 6</span>
+                        <span class="card-label">Niveau 6<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-7" onclick="startLevel(7)" disabled>
                         <span class="card-icon">💍</span>
-                        <span class="card-label">Niveau 7</span>
+                        <span class="card-label">Niveau 7<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
                     <button class="level-card locked" id="btn-8" onclick="startLevel(8)" disabled>
                         <span class="card-icon">🧩</span>
-                        <span class="card-label">Bonus</span>
+                        <span class="card-label">Bonus<span class="status-text"></span></span>
                         <span class="card-lock">🔒</span>
                         <span class="card-check">✓</span>
                     </button>
@@ -580,8 +682,8 @@
         <div id="level-7" class="screen">
             <h2>L'Ultime Question 💍</h2>
             <p>Avant d'ouvrir la toute dernière lettre, j'ai une question très importante à te poser...</p>
-            <h1 style="font-size: 28px; margin-bottom: 40px; color: #333; text-shadow: none;">M'aimes-tu ?</h1>
-
+            <h1 style="font-size: 28px; margin-bottom: 40px; color: #333; font-style: italic;">M'aimes-tu ?</h1>
+            
             <div id="boss-area">
                 <button id="btn-yes" onclick="winLevel()">OUI ! 😍</button>
                 <button id="btn-no" onmouseover="runAway(event)" ontouchstart="runAway(event)" onclick="runAway(event)">NON 😒</button>
@@ -601,17 +703,17 @@
         <div id="shop-screen" class="screen">
             <h2>La Boutique 🎁</h2>
             <p>Gagne des points en réussissant les épreuves, puis débloque tes cadeaux surprise !</p>
-            <p style="font-size: 22px; font-weight: 700; color: var(--rose-dark); font-family: 'Playfair Display', serif;">💎 <span id="points-count">0</span> points</p>
+            <div id="shop-points">💎 <span id="points-count">0</span> points</div>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 20px;">
-                <div class="shop-item">
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 10px;">
+                <div class="shop-item socks">
                     <div class="icon">🧦</div>
                     <h4>Chaussettes</h4>
                     <p>40 points</p>
                     <button class="action-btn" id="socks-btn" onclick="buyItem('socks')" disabled>Débloquer</button>
                     <p id="socks-msg" style="display:none;color:#2ecc71;font-size:14px;margin-top:10px;">Débloqué ! Je te les ramène avec plein d'amour 🧦❤️</p>
                 </div>
-                <div class="shop-item">
+                <div class="shop-item bracelet">
                     <div class="icon">📿</div>
                     <h4>Bracelet</h4>
                     <p>70 points</p>
@@ -619,22 +721,23 @@
                     <p id="bracelet-msg" style="display:none;color:#2ecc71;font-size:14px;margin-top:10px;">Débloqué ! Un souvenir de nos vacances rien que pour toi 📿✨</p>
                 </div>
             </div>
-            <p id="shop-warn" style="display:none;color:var(--rose-dark);font-weight:bold;margin-top:14px;">Pas encore assez de points, continue les épreuves ! 🥺</p>
+            <p id="shop-warn" style="display:none;color:#d63031;font-weight:bold;margin-top:15px;">Pas encore assez de points, continue les épreuves ! 🥺</p>
         </div>
 
         <!-- L'ÉCRAN DES LETTRES CLASSIQUES -->
         <div id="letter-screen" class="screen">
-            <h2 id="letter-title" style="color: var(--rose-dark); text-shadow: none;">Lettre</h2>
-            <p id="letter-content" style="font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.7; white-space: pre-wrap; text-align: left; font-size: 18px; color: #333;"></p>
-
+            <h2 id="letter-title">Lettre</h2>
+            <p id="letter-content" style="font-family:'Playfair Display',serif; font-style: italic; line-height: 1.7; white-space: pre-wrap; text-align: left; font-size: 18px;"></p>
+            
             <button id="back-btn" class="action-btn" onclick="backToHub()">Retour aux Épreuves</button>
-            <button id="surprise-btn" class="action-btn" style="display:none; background: linear-gradient(135deg, #b98fd9, #9b59b6); font-size: 18px; padding: 16px 30px; box-shadow: 0 8px 20px rgba(155, 89, 182, 0.5);" onclick="showFinalSurprise()">🎁 J'ai une dernière surprise pour toi...</button>
+            <button id="bonus-btn" class="action-btn" style="display:none; background:linear-gradient(135deg, var(--c8), var(--gold)); color:#5c3a00; font-size: 16px; box-shadow: 0 8px 22px rgba(255,184,79,0.5);" onclick="startLevel(8)">🧩 Faire l'épreuve bonus</button>
+            <button id="surprise-btn" class="action-btn" style="display:none; background:linear-gradient(135deg,#b98ac9,#7d3c98); font-size: 18px; padding: 16px 30px; box-shadow: 0 8px 22px rgba(155, 89, 182, 0.5);" onclick="showFinalSurprise()">🎁 J'ai une dernière surprise pour toi...</button>
         </div>
 
         <!-- L'ÉCRAN DE LA LETTRE FINALE (9 MOIS) -->
         <div id="final-surprise-screen" class="screen">
-            <h2 style="color: #9b59b6; font-size: 27px; text-shadow: none;">Joyeux 9 mois mon amour ! 🎉</h2>
-            <p style="font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.85; white-space: pre-wrap; text-align: left; font-size: 18px; color: #333;">Si tu lis ce message, c'est que tu es arrivée au bout de mon petit jeu. Mais la vraie raison de tout ça, c'est aujourd'hui...
+            <h2 style="color: #7d3c98; font-size: 26px;">Joyeux 9 mois mon amour ! 🎉</h2>
+            <p style="font-family:'Playfair Display',serif; font-style: italic; line-height: 1.85; white-space: pre-wrap; text-align: left; font-size: 18px;">Si tu lis ce message, c'est que tu es arrivée au bout de mon petit jeu. Mais la vraie raison de tout ça, c'est aujourd'hui...
 
 Cela fait maintenant 9 mois que tu illumines ma vie. Neuf mois incroyables, intenses, et magiques - et pourtant j'ai l'impression que ça fait à la fois une éternité et à peine quelques jours. C'est étrange comme le temps se déforme quand on est avec la bonne personne.
 
@@ -741,10 +844,24 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
 
         function updateHubProgress() {
             let completed = document.querySelectorAll('.level-card.completed').length;
-            let fill = document.getElementById('hub-progress-fill');
             let text = document.getElementById('hub-progress-text');
-            if(fill) fill.style.width = (completed / 8 * 100) + '%';
             if(text) text.innerText = completed + '/8 épreuves complétées';
+
+            let fill = document.getElementById('hub-path-fill');
+            let path = document.getElementById('hub-path');
+            if(fill && path && path.offsetParent !== null) {
+                if(completed === 0) {
+                    fill.style.height = '0px';
+                } else {
+                    let lastEl = document.getElementById('btn-' + completed);
+                    if(lastEl) {
+                        let pathRect = path.getBoundingClientRect();
+                        let elRect = lastEl.getBoundingClientRect();
+                        let centerY = elRect.top + elRect.height / 2 - pathRect.top;
+                        fill.style.height = Math.max(centerY, 0) + 'px';
+                    }
+                }
+            }
         }
 
         function hideAllScreens() {
@@ -811,10 +928,14 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
 
             if (currentLevel === 7) {
                 document.getElementById('back-btn').style.display = 'none';
+                document.getElementById('bonus-btn').style.display = 'inline-block';
                 document.getElementById('surprise-btn').style.display = 'inline-block';
                 setLevelState(8, 'unlocked');
+                launchConfettiFall(55);
+                showCelebrationToast("Bravo mon amour, tu as terminé toutes les épreuves ! 🎉");
             } else {
                 document.getElementById('back-btn').style.display = 'inline-block';
+                document.getElementById('bonus-btn').style.display = 'none';
                 document.getElementById('surprise-btn').style.display = 'none';
                 
                 let nextLevel = currentLevel + 1;
@@ -902,7 +1023,7 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
             let guess = parseInt(document.getElementById('price-input').value);
             let msg = document.getElementById('hint-msg-4');
             msg.style.display = 'block';
-            msg.style.color = '#c0392b';
+            msg.style.color = '#d63031';
             
             if(isNaN(guess)) msg.innerText = "N'oublie pas d'entrer un nombre !";
             else if(guess < targetDays) msg.innerText = "C'est plus ! ⬆️";
@@ -1058,6 +1179,7 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
                     document.getElementById('points-count').innerText = points;
                     document.getElementById('socks-btn').innerText = "Débloqué ✅";
                     document.getElementById('socks-msg').style.display = 'block';
+                    celebratePurchase(document.querySelector('.shop-item.socks'));
                 } else {
                     warn.style.display = 'block';
                 }
@@ -1068,11 +1190,66 @@ Ton L, qui t'aime un peu plus chaque jour.</p>
                     document.getElementById('points-count').innerText = points;
                     document.getElementById('bracelet-btn').innerText = "Débloqué ✅";
                     document.getElementById('bracelet-msg').style.display = 'block';
+                    celebratePurchase(document.querySelector('.shop-item.bracelet'));
                 } else {
                     warn.style.display = 'block';
                 }
             }
             refreshShopButtons();
+        }
+
+        // --- ANIMATIONS DE CÉLÉBRATION ---
+        function spawnParticleBurst(x, y, emojis, count) {
+            for(let i = 0; i < count; i++) {
+                let p = document.createElement('div');
+                p.className = 'confetti-burst';
+                p.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                let angle = Math.random() * Math.PI * 2;
+                let distance = Math.random() * 130 + 40;
+                let rot = Math.random() * 360;
+                p.style.left = (x - 10) + 'px';
+                p.style.top = (y - 10) + 'px';
+                p.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                p.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                p.style.setProperty('--rot', rot + 'deg');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1100);
+            }
+        }
+
+        function celebratePurchase(el) {
+            if(!el) return;
+            el.classList.add('purchased');
+            setTimeout(() => el.classList.remove('purchased'), 700);
+            let rect = el.getBoundingClientRect();
+            spawnParticleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, ['🎉', '✨', '💖', '⭐', '🎊'], 18);
+        }
+
+        function launchConfettiFall(count) {
+            let colors = ['🎉', '✨', '💖', '⭐', '🎊', '💛', '💜', '💙'];
+            for(let i = 0; i < count; i++) {
+                let p = document.createElement('div');
+                p.className = 'confetti-fall';
+                p.innerHTML = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.fontSize = (14 + Math.random() * 14) + 'px';
+                p.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+                p.style.animationDelay = (Math.random() * 0.6) + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 5200);
+            }
+        }
+
+        function showCelebrationToast(text) {
+            let toast = document.createElement('div');
+            toast.className = 'celebration-toast';
+            toast.innerText = text;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 600);
+            }, 3200);
         }
     </script>
 </body>
